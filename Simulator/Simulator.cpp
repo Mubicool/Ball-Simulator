@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cmath>
 
 
@@ -24,22 +25,30 @@ int main() {
     if (!texture.loadFromFile("image.png"))
     {
         std::cout << "could not" << std::endl;
-        return 0;
+        return -1;
     }
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("sound.wav"))
+    {
+        std::cout << "couldnt" << std::endl;
+        return -1;
+    }
+    sf::Sound sound;
+    sound.setBuffer(buffer);
     
-   
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
-    sf::CircleShape ball(20);
-    
+    sf::CircleShape ball(40);
+    ball.setFillColor(sf::Color(255, 130, 130));
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
 
-    sf::Vector2f ballSpeed(30, 30);
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
+    sf::Vector2f ballSpeed(10, 5);
+    
+    ball.setTexture(&texture);
+    
     texture.setSmooth(true);
-    sprite.setPosition(WIDTH / 2 -sprite.getScale().x, HEIGHT / 2 - sprite.getScale().y);
+    
     
 
     while (window.isOpen()) {
@@ -48,9 +57,9 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        if (ballSpeed.y > 30 || ballSpeed.y < -30) {
+        if (ballSpeed.y > 10 || ballSpeed.y < -10) {
             /*if (ballSpeed.y > 100)*/
-            ballSpeed.y = 30;
+            ballSpeed.y = 10;
            /* if (ballSpeed.y < -100)
                 ballSpeed.y = -100;*/
 
@@ -107,9 +116,10 @@ int main() {
         //ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y);
         //up = up - Gravity;
         ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y + ballSpeed.y);
-        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2 || ball.getPosition().x <= 0 + ball.getRadius()) {
+        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2 || ball.getPosition().x <= 0 ) {
 
             ballSpeed.x = -ballSpeed.x;// * bouce_fac;
+            sound.play();
         }
         if (ball.getPosition().y <= 0)
         {
@@ -123,6 +133,7 @@ int main() {
             //int j = i;
             ball.setPosition(ball.getPosition().x,0);
             //std::cout << "top !!" << std::endl;
+            sound.play();
          
         }
         if (ball.getPosition().y >= HEIGHT - (ball.getRadius()*2)) {
@@ -136,6 +147,7 @@ int main() {
                 ground = false;
                 //std::cout << "Bounce Speed  " << ballSpeed.y << std::endl;
                 k = i;
+                sound.play();
             }
             if (ballSpeed.y > -3)
             {
@@ -150,7 +162,7 @@ int main() {
         i++;
         window.clear();
         window.draw(ball);
-        window.draw(sprite);
+        
         window.display();
         
     }
