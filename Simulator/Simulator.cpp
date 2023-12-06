@@ -14,6 +14,7 @@ int main() {
     int k = 0;
     int j = 0;
     int l = 0;
+    int z = 0;
     float up = 0;
     bool ground = false;
     bool top = false;
@@ -48,6 +49,7 @@ int main() {
             ballSpeed.y += EARTH_GRAVITY;
             
         }
+        if(i == 0)
         ballSpeed.x = 0;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
         {
@@ -64,7 +66,7 @@ int main() {
         {
 
             ballSpeed.x = 5;
-            ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y);
+           
 
 
 
@@ -73,7 +75,7 @@ int main() {
         {
 
             ballSpeed.x = -5;
-            ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y);
+           
 
 
 
@@ -116,10 +118,10 @@ int main() {
                     continue;
                 time = (ballSpeed.y * 2.83) / (EARTH_GRAVITY * 8);
                 check = ballSpeed.y;
-                //std::cout << "Ball speed = " << ballSpeed.y * 2.83 << " ; time = " << time << std::endl;
+                std::cout << "Ball speed = " << ballSpeed.y * 2.83 << " ; time = " << time << std::endl;
                 ballSpeed.y = -ballSpeed.y * bouce_fac;
                 ground = false;
-                //std::cout << "Bounce Speed  " << ballSpeed.y << std::endl;
+                std::cout << "Bounce Speed  " << ballSpeed.y << std::endl;
                 k = i;
             }
             if (ballSpeed.y > -3)
