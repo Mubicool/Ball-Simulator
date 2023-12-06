@@ -39,13 +39,17 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball", sf::Style::Default, settings);
     window.setFramerateLimit(60);
-
+    sf::RectangleShape background(sf::Vector2f(800, 800));
+    //background.setPosition(400,400);
+    background.setFillColor(sf::Color(255, 255, 255));
     sf::CircleShape ball(20);
-    ball.setFillColor(sf::Color(255, 130, 130));
+    ball.setFillColor(sf::Color(100, 255, 100));
     ball.setTexture(&texture);
     texture.setSmooth(true);
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
-
+    texture.setRepeated(true);
+    //ball.setOutlineThickness(1);
+    //ball.setOutlineColor(sf::Color(255, 0, 0));
     sf::Vector2f ballSpeed(0, 0);
 
     while (window.isOpen()) {
@@ -84,12 +88,14 @@ int main() {
         {
             if (ball.getPosition().x <= WIDTH - ball.getRadius() * 2 - 10)
             ballSpeed.x = 20;
+            
 
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         {
             if (ball.getPosition().x >= 0 + 10)
             ballSpeed.x = -20;
+            
 
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
@@ -136,7 +142,8 @@ int main() {
 
         if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2 || ball.getPosition().x <= 0) {
 
-            ballSpeed.x = -ballSpeed.x * bouce_fac;
+            ballSpeed.x = -ballSpeed.x ;
+            ballSpeed.x = ballSpeed.x + ballSpeed.x * (-0.10);
             sound.play();
         }
         if (ball.getPosition().y <= 0)
@@ -173,7 +180,7 @@ int main() {
                 ground = true;
                 ball.setPosition(ball.getPosition().x, HEIGHT - ball.getRadius() * 2);
                 ballSpeed.y = 0;
-                ballSpeed.x = ballSpeed.x + ballSpeed.x * (-0.25);
+                
 
 
             }
@@ -181,6 +188,7 @@ int main() {
         //std::cout << "Iteration = " << i << " ; Ball speed = " << ballSpeed.y << std::endl;
         i++;
         window.clear();
+        window.draw(background);
         window.draw(ball);
         window.display();
 
