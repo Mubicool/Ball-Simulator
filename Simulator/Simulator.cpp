@@ -18,10 +18,17 @@ int main() {
     float up = 0;
     bool ground = false;
     bool top = false;
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    sf::Texture texture;
+    if (!texture.loadFromFile("image.png"))
+    {
+        std::cout << "could not" << std::endl;
+        return 0;
+    }
     
-    
-
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball");
+   
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
     sf::CircleShape ball(20);
@@ -29,6 +36,11 @@ int main() {
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
 
     sf::Vector2f ballSpeed(30, 30);
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    texture.setSmooth(true);
+    sprite.setPosition(WIDTH / 2 -sprite.getScale().x, HEIGHT / 2 - sprite.getScale().y);
+    
 
     while (window.isOpen()) {
         sf::Event event;
@@ -138,6 +150,7 @@ int main() {
         i++;
         window.clear();
         window.draw(ball);
+        window.draw(sprite);
         window.display();
         
     }
