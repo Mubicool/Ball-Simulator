@@ -41,9 +41,9 @@ int main() {
     window.setFramerateLimit(60);
     sf::RectangleShape background(sf::Vector2f(800, 800));
     //background.setPosition(400,400);
-    background.setFillColor(sf::Color(255, 255, 255));
+    background.setFillColor(sf::Color(50, 50, 100));
     sf::CircleShape ball(20);
-    ball.setFillColor(sf::Color(100, 255, 100));
+    ball.setFillColor(sf::Color(255, 255, 255));
     ball.setTexture(&texture);
     texture.setSmooth(true);
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
@@ -134,9 +134,9 @@ int main() {
         }
         ball.setPosition(ball.getPosition().x + ballSpeed.x + c, ball.getPosition().y);
         if (ballSpeed.x < 0)
-        c = 5;
+        c = 2;
         if (ballSpeed.x > 0)
-        c = -5;
+        c = -2;
 
         up = up - EARTH_GRAVITY;
 
