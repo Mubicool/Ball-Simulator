@@ -32,7 +32,7 @@ int main() {
     window.setFramerateLimit(60);
 
     sf::CircleShape ball(20);
-    ball.setFillColor(sf::Color::Red);
+    
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
 
     sf::Vector2f ballSpeed(30, 30);
