@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <cmath>
+#include <random>
 
 
 
@@ -35,6 +36,12 @@ int main() {
     }
     sf::Sound sound;
     sound.setBuffer(buffer);
+    sf::Music music;
+    if (!music.openFromFile("sound.wav"))
+    {
+        std::cout << "couldnt" << std::endl;
+        return -1;
+    }// error
     
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball", sf::Style::Default, settings);
     window.setFramerateLimit(60);
@@ -43,7 +50,7 @@ int main() {
     ball.setFillColor(sf::Color(255, 130, 130));
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
 
-    sf::Vector2f ballSpeed(10, 5);
+    sf::Vector2f ballSpeed(20, 10);
     
     ball.setTexture(&texture);
     
@@ -57,9 +64,18 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        if (ballSpeed.y > 10 || ballSpeed.y < -10) {
+        std::random_device rd;  // Obtain a random number from hardware
+        std::mt19937 gen(rd()); // Seed the generator
+
+        // Define the distribution for numbers between 1 and 30
+        std::uniform_int_distribution<> distribution(10, 30);
+
+        // Generate a random number between 1 and 30
+        int randomNumber = distribution(gen);
+
+        if (ballSpeed.y > 30 || ballSpeed.y < -30) {
             /*if (ballSpeed.y > 100)*/
-            ballSpeed.y = 10;
+            ballSpeed.y = 30;
            /* if (ballSpeed.y < -100)
                 ballSpeed.y = -100;*/
 
@@ -116,11 +132,21 @@ int main() {
         //ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y);
         //up = up - Gravity;
         ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y + ballSpeed.y);
-        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2 || ball.getPosition().x <= 0 ) {
-
-            ballSpeed.x = -ballSpeed.x;// * bouce_fac;
+        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2) 
+        {
+            ballSpeed.x = -randomNumber;// * bouce_fac;
             sound.play();
         }
+        if (ball.getPosition().x <= 0 )
+        {
+
+                ballSpeed.x = randomNumber;
+                sound.play();
+        }
+            
+            
+            
+        
         if (ball.getPosition().y <= 0)
         {
             if (i - j == 1)
@@ -129,6 +155,7 @@ int main() {
             
            // ballSpeed.y = up + ballSpeed.y;
             //up = 0;
+            ballSpeed.y = randomNumber;
             ballSpeed.y = ballSpeed.y * 2 * bouce_fac ;
             //int j = i;
             ball.setPosition(ball.getPosition().x,0);
@@ -143,6 +170,7 @@ int main() {
                 //time = (ballSpeed.y * 2.83) / (Gravity * 8);
                 
                 //std::cout << "Ball speed = " << ballSpeed.y * 2.83 << " ; time = " << time << std::endl;
+                ballSpeed.y = randomNumber;
                 ballSpeed.y = -ballSpeed.y;// *bouce_fac;
                 ground = false;
                 //std::cout << "Bounce Speed  " << ballSpeed.y << std::endl;
