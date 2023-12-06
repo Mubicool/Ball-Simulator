@@ -2,15 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <cmath>
-#include <random>
 
 
 
 int main() {
     int WIDTH = 800;
     int HEIGHT = 800;
-    float Gravity = 9.81 / 8; 
-    float bouce_fac =0.7;
+    float EARTH_GRAVITY = 9.81 / 8;
+    float bouce_fac = 0.7;
     float time = 0.0;
     int i = 0;
     int k = 0;
@@ -20,6 +19,7 @@ int main() {
     float up = 0;
     bool ground = false;
     bool top = false;
+    int c = 0;
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::Texture texture;
@@ -36,27 +36,17 @@ int main() {
     }
     sf::Sound sound;
     sound.setBuffer(buffer);
-    sf::Music music;
-    if (!music.openFromFile("sound.wav"))
-    {
-        std::cout << "couldnt" << std::endl;
-        return -1;
-    }// error
-    
+
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Bouncing Ball", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
-    sf::CircleShape ball(40);
+    sf::CircleShape ball(20);
     ball.setFillColor(sf::Color(255, 130, 130));
+    ball.setTexture(&texture);
+    texture.setSmooth(true);
     ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
 
-    sf::Vector2f ballSpeed(20, 10);
-    
-    ball.setTexture(&texture);
-    
-    texture.setSmooth(true);
-    
-    
+    sf::Vector2f ballSpeed(0, 0);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -64,114 +54,115 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        std::random_device rd;  // Obtain a random number from hardware
-        std::mt19937 gen(rd()); // Seed the generator
-
-        // Define the distribution for numbers between 1 and 30
-        std::uniform_int_distribution<> distribution(10, 30);
-
-        // Generate a random number between 1 and 30
-        int randomNumber = distribution(gen);
-
-        if (ballSpeed.y > 30 || ballSpeed.y < -30) {
+        if (ballSpeed.y > 100 || ballSpeed.y < -100) {
             /*if (ballSpeed.y > 100)*/
-            ballSpeed.y = 30;
-           /* if (ballSpeed.y < -100)
-                ballSpeed.y = -100;*/
+            ballSpeed.y = 100;
+            /* if (ballSpeed.y < -100)
+                 ballSpeed.y = -100;*/
 
 
         }
-        //if (ballSpeed.y < 30 && ground != true) {
-        //    
-        //    ballSpeed.y += Gravity;
-        //    
-        //}
-        //if(i ==0)
-        //ballSpeed.x = 0;
-        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-        //{
-        //    if (top == true)
-        //        continue;
-        //    ground = false;
-        //    
-        //        up = 20;
-        //        l = i;
-        //        
-        //    
-        //}
-        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        //{
+        if (ballSpeed.y < 30 && ground != true) {
 
-        //    ballSpeed.x = 5;
-        //   
+            ballSpeed.y += EARTH_GRAVITY;
 
-
-
-        //}
-        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        //{
-
-        //    ballSpeed.x = -5;
-        //   
-
-
-
-        //}
-        //if (up > 0) {
-        //    ballSpeed.y = up;
-        //    ball.setPosition(ball.getPosition().x, ball.getPosition().y - ballSpeed.y);
-        //   // std::cout << "up speed = " << up << std::endl;
-        //}
-
-        //else {
-
-        //    if(ground != true)
-        //    ball.setPosition(ball.getPosition().x,ball.getPosition().y + ballSpeed.y);
-        //    top = false;
-        //}
-        //ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y);
-        //up = up - Gravity;
-        ball.setPosition(ball.getPosition().x + ballSpeed.x, ball.getPosition().y + ballSpeed.y);
-        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2) 
+        }
+        if (i == 0)
+            ballSpeed.x = 0;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
         {
-            ballSpeed.x = -randomNumber;// * bouce_fac;
+            if (top == true)
+                continue;
+            ground = false;
+
+            up = 20;
+            l = i;
+
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        {
+            if (ball.getPosition().x <= WIDTH - ball.getRadius() * 2 - 10)
+            ballSpeed.x = 20;
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        {
+            if (ball.getPosition().x >= 0 + 10)
+            ballSpeed.x = -20;
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+        {
+            ballSpeed.x = 0;
+            ballSpeed.y = 0;
+            int i = 0;
+            int k = 0;
+            int j = 0;
+            int l = 0;
+            int z = 0;
+            float up = 0;
+            bool ground = false;
+            bool top = false;
+            int c = 0;
+            ball.setPosition(WIDTH / 2 - ball.getRadius(), HEIGHT / 2 - ball.getRadius());
+
+        }
+        if (up > 0) {
+            ballSpeed.y = up;
+            ball.setPosition(ball.getPosition().x, ball.getPosition().y - ballSpeed.y);
+            // std::cout << "up speed = " << up << std::endl;
+        }
+
+        else {
+            if (ground != true)
+                ball.setPosition(ball.getPosition().x , ball.getPosition().y + ballSpeed.y);
+            top = false;
+        }
+        
+            
+        if (ballSpeed.x < 2 && ballSpeed.x > -2)
+        {
+            ballSpeed.x = 0;
+            c = 0;
+        }
+        ball.setPosition(ball.getPosition().x + ballSpeed.x + c, ball.getPosition().y);
+        if (ballSpeed.x < 0)
+        c = 5;
+        if (ballSpeed.x > 0)
+        c = -5;
+
+        up = up - EARTH_GRAVITY;
+
+        if (ball.getPosition().x >= WIDTH - ball.getRadius() * 2 || ball.getPosition().x <= 0) {
+
+            ballSpeed.x = -ballSpeed.x * bouce_fac;
             sound.play();
         }
-        if (ball.getPosition().x <= 0 )
-        {
-
-                ballSpeed.x = randomNumber;
-                sound.play();
-        }
-            
-            
-            
-        
         if (ball.getPosition().y <= 0)
         {
             if (i - j == 1)
                 continue;
             top = true;
-            
-           // ballSpeed.y = up + ballSpeed.y;
-            //up = 0;
-            ballSpeed.y = randomNumber;
-            ballSpeed.y = ballSpeed.y * 2 * bouce_fac ;
-            //int j = i;
-            ball.setPosition(ball.getPosition().x,0);
+
+            ballSpeed.y = up + ballSpeed.y;
+            up = 0;
+            ballSpeed.y = ballSpeed.y * 2 * bouce_fac;
+            int j = i;
+            ball.setPosition(ball.getPosition().x, 0);
             //std::cout << "top !!" << std::endl;
             sound.play();
-         
+
         }
-        if (ball.getPosition().y >= HEIGHT - (ball.getRadius()*2)) {
+        if (ball.getPosition().y >= HEIGHT - (ball.getRadius() * 2)) {
             if (ground != true) {
                 if (i - k - 1 == 0)
                     continue;
-                //time = (ballSpeed.y * 2.83) / (Gravity * 8);
-                
+                time = (ballSpeed.y * 2.83) / (EARTH_GRAVITY * 8);
+
                 //std::cout << "Ball speed = " << ballSpeed.y * 2.83 << " ; time = " << time << std::endl;
-                ballSpeed.y = randomNumber;
-                ballSpeed.y = -ballSpeed.y;// *bouce_fac;
+                ballSpeed.y = -ballSpeed.y * bouce_fac;
+                ballSpeed.x = ballSpeed.x + ballSpeed.x * (-0.10);
                 ground = false;
                 //std::cout << "Bounce Speed  " << ballSpeed.y << std::endl;
                 k = i;
@@ -180,19 +171,19 @@ int main() {
             if (ballSpeed.y > -3)
             {
                 ground = true;
-                ball.setPosition(ball.getPosition().x,HEIGHT - ball.getRadius()*2);
-                //ballSpeed.y = 0;
-                
-            
+                ball.setPosition(ball.getPosition().x, HEIGHT - ball.getRadius() * 2);
+                ballSpeed.y = 0;
+                ballSpeed.x = ballSpeed.x + ballSpeed.x * (-0.25);
+
+
             }
         }
         //std::cout << "Iteration = " << i << " ; Ball speed = " << ballSpeed.y << std::endl;
         i++;
         window.clear();
         window.draw(ball);
-        
         window.display();
-        
+
     }
 
     return 0;
