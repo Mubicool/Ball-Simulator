@@ -142,7 +142,7 @@ int main() {
         }
        
 
-        if (ballSpeed.x < 2 && ballSpeed.x > -2)
+        if (ballSpeed.x < 1 && ballSpeed.x > -1)
         {
             ballSpeed.x = 0;
             c = 0;
