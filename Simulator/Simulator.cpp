@@ -5,7 +5,7 @@ Game::Game(int W, int H, string title) {
     //window>............
     WIDTH = W;
     HEIGHT = H;
-    window = new RenderWindow(VideoMode(800, 800), "GANDU");
+    window = new RenderWindow(VideoMode(800, 800), "Ball Simulator");
 
     //load textures & sounds
     Buffer();
